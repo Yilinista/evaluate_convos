@@ -435,7 +435,7 @@ This study should take approximately 15-20 minutes to complete.
   
   // Add conversation evaluation pages directly
   conversations.forEach((conversation, index) => {
-    addConversationPage(form, conversation, index + 1);
+    addConversationPage(form, conversation, index + 1, conversations.length);
   });
   
   // Add final page
@@ -508,8 +508,8 @@ function addDemographicQuestions(form) {
     .setRequired(false);
 }
 
-function addConversationPage(form, conversation, pageNumber) {
-  const pageTitle = `Conversation ${pageNumber} of ${conversations.length}`;
+function addConversationPage(form, conversation, pageNumber, totalConversations) {
+  const pageTitle = `Conversation ${pageNumber} of ${totalConversations}`;
   const conversationId = conversation.id;
   
   // Fix 3: Use truncation utility for long conversations

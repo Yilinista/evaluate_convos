@@ -2,6 +2,8 @@
 
 Generates Google Forms for Prolific studies comparing human and LLM empathy evaluations.
 
+**Requirements:** Python 3.7+ with `json` and `os` modules (included in standard library)
+
 ## Overview
 
 Creates forms with:
@@ -46,6 +48,9 @@ Each JSON:
 
 1. **Generate**: `python create_forms.py`
 2. **Deploy**: Copy `empathy_evaluation_form.gs` to [script.google.com](https://script.google.com)
+3. **Run**: Execute `createEmpathyEvaluationForm()` function
+4. **Grant Permissions**: Allow Google Apps Script to create forms and access Drive
+5. **Use**: Share form URL with Prolific participants
 
 ## Configuration
 
@@ -79,3 +84,6 @@ Outputs:
 - **Script fails**: Check Google Apps Script permissions and JSON format
 - **Form empty**: Verify empathy scores exist and are integers
 - **Slow loading**: Reduce `max_conversations` parameter
+- **Permission denied**: Ensure Google account can create forms and access Drive
+
+

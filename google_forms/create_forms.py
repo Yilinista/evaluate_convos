@@ -95,6 +95,7 @@ class EmpathyFormGenerator:
         # Flatten and limit conversations for the form
         form_conversations = []
         conversation_count = 0
+        skipped_conversations = 0
         
         for participant_id, rounds in conversations.items():
             for round_name, conversation_data in rounds:
@@ -119,6 +120,8 @@ class EmpathyFormGenerator:
                             "llm_scores": current_scores
                         })
                         conversation_count += 1
+                    else:
+                        skipped_conversations += 1
                 
                 # Process session_1 if it exists
                 if "session_1" in conversation_data and conversation_count < max_conversations:
@@ -137,10 +140,14 @@ class EmpathyFormGenerator:
                             "llm_scores": session_1_scores
                         })
                         conversation_count += 1
+                    else:
+                        skipped_conversations += 1
             
             # Fix 4: Move the outer break here for better flow control  
             if conversation_count >= max_conversations:
                 break
+        
+        print(f"Processed {conversation_count} conversations, skipped {skipped_conversations} (missing text or scores)")
         
         # Generate the Apps Script code
         script_code = self._generate_script_template(form_conversations)
@@ -197,7 +204,7 @@ This study should take approximately 15-20 minutes to complete.
   
   // Add conversation evaluation pages directly
   conversations.forEach((conversation, index) => {{
-    addConversationPage(form, conversation, index + 1);
+    addConversationPage(form, conversation, index + 1, conversations.length);
   }});
   
   // Add final page
@@ -270,8 +277,8 @@ function addDemographicQuestions(form) {{
     .setRequired(false);
 }}
 
-function addConversationPage(form, conversation, pageNumber) {{
-  const pageTitle = `Conversation ${{pageNumber}} of ${{conversations.length}}`;
+function addConversationPage(form, conversation, pageNumber, totalConversations) {{
+  const pageTitle = `Conversation ${{pageNumber}} of ${{totalConversations}}`;
   const conversationId = conversation.id;
   
   // Fix 3: Use truncation utility for long conversations
