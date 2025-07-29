@@ -174,22 +174,21 @@ class EmpathyFormGenerator:
 
 function createEmpathyEvaluationForm() {{
   // Form configuration
-  const FORM_TITLE = "Empathy Evaluation Study - Chatbot Response Assessment";
+  const FORM_TITLE = "🤖 Chatbot Empathy Evaluation Study";
   const FORM_DESCRIPTION = `
-Welcome to our research study on empathy evaluation in chatbot conversations.
+Welcome to our research study on empathy in AI conversations! 👋
 
-You will be shown conversations between users and a physical activity counselor chatbot. For each conversation, you'll see:
-1. The complete conversation transcript
-2. Questions asking for YOUR evaluation on 4 empathy dimensions
+**What you'll do:**
+• Review conversations between users and a physical activity counselor chatbot
+• Rate the chatbot's empathy on 4 key dimensions (0-2 scale)
+• Share your confidence level and optional feedback
 
-Please rate each conversation based on how empathetic you think the chatbot's responses are.
+**Time required:** Approximately 15-20 minutes
+**Number of conversations:** ${{conversations.length}}
 
-Each dimension is rated on a scale of 0-2:
-- 0 = Not at all present
-- 1 = Somewhat present  
-- 2 = Strongly present
+Your thoughtful evaluation will help us understand how well AI systems can demonstrate empathy in supportive conversations.
 
-This study should take approximately 15-20 minutes to complete.
+Thank you for contributing to this important research! 🙏
   `.trim();
 
   // Conversation data from your pilot study
@@ -278,76 +277,82 @@ function addDemographicQuestions(form) {{
 }}
 
 function addConversationPage(form, conversation, pageNumber, totalConversations) {{
-  const pageTitle = `Conversation ${{pageNumber}} of ${{totalConversations}}`;
+  const pageTitle = `📋 Conversation ${{pageNumber}} of ${{totalConversations}}`;
   const conversationId = conversation.id;
   
-  // Fix 3: Use truncation utility for long conversations
-  const conversationText = truncateText(conversation.text, 1200);
+  // Clean up participant ID display
+  const participantDisplay = conversation.participant.replace('whatsapp:+', 'P-');
+  const sessionDisplay = conversation.session.replace('_', ' ').replace(/\\b\\w/g, l => l.toUpperCase());
   
   form.addPageBreakItem()
     .setTitle(pageTitle)
     .setHelpText(`
-**Conversation Context:**
-- Participant: ${{conversation.participant.replace('whatsapp:', '')}}
-- Round: ${{conversation.round}}
-- Session: ${{conversation.session}}
+📊 **Study Context**
+• Participant ID: ${{participantDisplay}}
+• Study Round: ${{conversation.round.replace('_', ' ').toUpperCase()}}  
+• Session Type: ${{sessionDisplay}}
 
-Please read the conversation below and then provide your empathy ratings.
+📖 **Instructions:** Please read the conversation below carefully, then rate the chatbot's empathy on four dimensions.
     `.trim());
   
-  // Display the conversation
+  // Display the conversation with better formatting
   form.addSectionHeaderItem()
-    .setTitle("Conversation Transcript");
+    .setTitle("💬 Conversation Transcript");
     
-  // Fix 5: Use HTML pre-formatting for better text display
+  // Improved conversation display with better formatting
+  const formattedConversation = conversation.text
+    .replace(/\\*\\*Bot:\\*\\*/g, '🤖 **Chatbot:**')
+    .replace(/\\*\\*User:\\*\\*/g, '�� **User:**');
+    
   form.addParagraphTextItem()
     .setTitle("Conversation")
-    .setHelpText(`<pre>${{conversationText}}</pre>`)
+    .setHelpText(`<div style="background-color: #f8f9fa; padding: 15px; border-radius: 8px; font-family: 'Segoe UI', Arial, sans-serif; line-height: 1.6;"><pre style="white-space: pre-wrap; margin: 0;">${{formattedConversation}}</pre></div>`)
     .setRequired(false);
-    
-  // Human evaluation grid
+  
+  // Human evaluation grid with better styling
   form.addSectionHeaderItem()
-    .setTitle("Your Empathy Evaluation");
+    .setTitle("🎯 Your Empathy Assessment");
     
   form.addParagraphTextItem()
-    .setTitle("Rating Instructions")
+    .setTitle("📝 Rating Guidelines")
     .setHelpText(`
-Please rate the chatbot's empathy on each dimension using the scale below:
+**Please rate the chatbot's empathy on each dimension:**
 
-**0 = Not at all present**
-**1 = Somewhat present** 
-**2 = Strongly present**
+🔹 **0 = Not Present** - The chatbot shows no evidence of this empathy dimension
+🔹 **1 = Somewhat Present** - The chatbot shows some evidence but it's limited or unclear  
+🔹 **2 = Strongly Present** - The chatbot clearly demonstrates this empathy dimension
 
-**Definitions:**
-• **Emotional Reactions**: Does the response express warmth, compassion, concern, or similar feelings toward the user?
-• **Explorations**: Does the response attempt to explore the user's experiences and feelings?
-• **Interpretations**: Does the response communicate understanding of the user's experiences and feelings?
-• **Overall Empathy**: Does the response demonstrate overall understanding of the user's feelings?
+**📚 Dimension Definitions:**
+• **Emotional Reactions**: Does the chatbot express warmth, compassion, concern, or similar supportive feelings?
+• **Explorations**: Does the chatbot actively explore and inquire about the user's experiences and feelings?
+• **Interpretations**: Does the chatbot demonstrate understanding by reflecting or paraphrasing the user's situation?
+• **Overall Empathy**: Does the chatbot show overall emotional understanding and connection with the user?
     `.trim())
     .setRequired(false);
   
-  // Create grid for empathy ratings
+  // Create empathy rating grid with better labels
   const empathyGrid = form.addGridItem();
-  empathyGrid.setTitle(`Empathy Ratings - Conversation ${{pageNumber}}`);
+  empathyGrid.setTitle(`⭐ Empathy Ratings - Conversation ${{pageNumber}}`);
   empathyGrid.setRows([
-    "Emotional Reactions",
-    "Explorations", 
-    "Interpretations",
-    "Overall Empathy"
+    "🔸 Emotional Reactions",
+    "🔸 Explorations", 
+    "🔸 Interpretations",
+    "🔸 Overall Empathy"
   ]);
-  empathyGrid.setColumns(["0 (Not at all)", "1 (Somewhat)", "2 (Strongly)"]);
+  empathyGrid.setColumns(["0 (Not Present)", "1 (Somewhat Present)", "2 (Strongly Present)"]);
   empathyGrid.setRequired(true);
   
-  // Add confidence rating
+  // Add confidence rating with better styling
   form.addScaleItem()
-    .setTitle("How confident are you in your empathy ratings for this conversation?")
+    .setTitle("🎯 Confidence Level: How confident are you in your empathy ratings above?")
     .setBounds(1, 5)
     .setLabels("Not confident at all", "Very confident")
     .setRequired(true);
   
-  // Optional comments
+  // Optional comments with better prompt
   form.addParagraphTextItem()
-    .setTitle("Additional comments about this conversation (Optional)")
+    .setTitle("💭 Additional Comments (Optional)")
+    .setHelpText("Feel free to share any thoughts about this conversation or explain your reasoning for the ratings above.")
     .setRequired(false);
 }}
 
@@ -366,12 +371,6 @@ If you have any questions about this research, please contact the research team.
     .setTitle("Final feedback")
     .setHelpText("Do you have any final thoughts about this study or the conversations you evaluated? (Optional)")
     .setRequired(false);
-}}
-
-// Fix 3: Actually use the truncation utility function
-function truncateText(text, maxLength = 1000) {{
-  if (text.length <= maxLength) return text;
-  return text.substring(0, maxLength) + "\\n\\n[Conversation truncated for length - full context available in original data]";
 }}
 
 // Function to validate and test the form creation
