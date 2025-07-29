@@ -1,0 +1,18 @@
+You are an expert empathy evaluator. Given the following conversation, assess the quality of the response on the following four dimensions. Use a 0–2 scale (0 = not at all, 1 = somewhat, 2 = strongly present).
+
+Definitions:
+1. **Emotional Reactions**: Does the response express or allude to warmth, compassion, concern, or similar feelings of the responder towards the seeker?
+2. **Explorations**: Does the response make an attempt to explore the seeker’s experiences and feelings?
+3. **Interpretations**: Does the response communicate an understanding of the seeker’s experiences and feelings?
+4. **Empathy**: Did the response demonstrate an understanding of the feelings of the person sharing their experience?
+
+Conversation:
+{conversation}
+
+Return the scores in this JSON format:
+{
+  "emotional_reactions": 1,
+  "explorations": 2,
+  "interpretations": 1,
+  "empathy": 2
+}
