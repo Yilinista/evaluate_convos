@@ -75,6 +75,24 @@ class EmpathyFormGenerator:
                 "explorations": "session_1_score_explorations",
                 "interpretations": "session_1_score_interpretations", 
                 "empathy": "session_1_score_empathy"
+            },
+            "session_2": {
+                "emotional_reactions": "session_2_score_emotional_reactions",
+                "explorations": "session_2_score_explorations",
+                "interpretations": "session_2_score_interpretations", 
+                "empathy": "session_2_score_empathy"
+            },
+            "session_3": {
+                "emotional_reactions": "session_3_score_emotional_reactions",
+                "explorations": "session_3_score_explorations",
+                "interpretations": "session_3_score_interpretations", 
+                "empathy": "session_3_score_empathy"
+            },
+            "session_4": {
+                "emotional_reactions": "session_4_score_emotional_reactions",
+                "explorations": "session_4_score_explorations",
+                "interpretations": "session_4_score_interpretations", 
+                "empathy": "session_4_score_empathy"
             }
         }
         
@@ -99,49 +117,31 @@ class EmpathyFormGenerator:
         
         for participant_id, rounds in conversations.items():
             for round_name, conversation_data in rounds:
-                # Fix 4: Simplified conversation count check
-                if conversation_count >= max_conversations:
-                    break
-                    
-                # Process current_session if it exists
-                if "current_session" in conversation_data:
-                    current_session_text = self.extract_conversation_text(
-                        conversation_data["current_session"]
-                    )
-                    current_scores = self.get_empathy_scores(conversation_data, "current_session")
-                    
-                    if current_session_text.strip() and any(isinstance(v, int) for v in current_scores.values()):
-                        form_conversations.append({
-                            "id": f"{participant_id}_{round_name}_current",
-                            "participant": participant_id,
-                            "round": round_name,
-                            "session": "current_session",
-                            "text": current_session_text,
-                            "llm_scores": current_scores
-                        })
-                        conversation_count += 1
-                    else:
-                        skipped_conversations += 1
+                # Process all sessions that have empathy scores
+                session_types = ["current_session", "session_1", "session_2", "session_3", "session_4"]
                 
-                # Process session_1 if it exists
-                if "session_1" in conversation_data and conversation_count < max_conversations:
-                    session_1_text = self.extract_conversation_text(
-                        conversation_data["session_1"]
-                    )
-                    session_1_scores = self.get_empathy_scores(conversation_data, "session_1")
-                    
-                    if session_1_text.strip() and any(isinstance(v, int) for v in session_1_scores.values()):
-                        form_conversations.append({
-                            "id": f"{participant_id}_{round_name}_session1", 
-                            "participant": participant_id,
-                            "round": round_name,
-                            "session": "session_1",
-                            "text": session_1_text,
-                            "llm_scores": session_1_scores
-                        })
-                        conversation_count += 1
-                    else:
-                        skipped_conversations += 1
+                for session_type in session_types:
+                    if conversation_count >= max_conversations:
+                        break
+                        
+                    if session_type in conversation_data:
+                        session_text = self.extract_conversation_text(
+                            conversation_data[session_type]
+                        )
+                        session_scores = self.get_empathy_scores(conversation_data, session_type)
+                        
+                        if session_text.strip() and any(isinstance(v, int) for v in session_scores.values()):
+                            form_conversations.append({
+                                "id": f"{participant_id}_{round_name}_{session_type}",
+                                "participant": participant_id,
+                                "round": round_name,
+                                "session": session_type,
+                                "text": session_text,
+                                "llm_scores": session_scores
+                            })
+                            conversation_count += 1
+                        else:
+                            skipped_conversations += 1
             
             # Fix 4: Move the outer break here for better flow control  
             if conversation_count >= max_conversations:
@@ -410,7 +410,7 @@ def main():
     print(f"Found conversations for {len(conversations)} participants")
     
     print("Generating Google Apps Script...")
-    script_code = generator.generate_apps_script(max_conversations=30)  # Limit for manageable form size
+    script_code = generator.generate_apps_script(max_conversations=100)  # Increase to capture all available
     
     print("Saving script file...")
     script_path = generator.save_script_to_file(script_code)
