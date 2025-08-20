@@ -6,9 +6,7 @@ Analysis of agreement between LLM and human evaluators on empathy ratings, using
 
 We analyzed empathy ratings across four dimensions (emotional reactions, explorations, interpretations, overall empathy) on a 0-2 scale. Human evaluators rated 55 conversations total: 28 from Set 1 and 27 from Set 2.
 
-**Two correlation methods:**
-1. **Dimension average**: Calculate Spearman correlation for each dimension separately, then average
-2. **Overall correlation**: Pool all scores and calculate single correlation
+**Method:** We use dimension-average Spearman correlation (calculate correlation for each dimension separately, then average) to match the original study approach.
 
 ## Structure
 
@@ -43,13 +41,16 @@ When human raters disagreed, we used the most common rating as the final score. 
 
 ## Usage
 
-**Main analysis:**
+**Recommended analysis (clean results):**
 ```bash
 cd analysis/full_dataset_majority/
-python llm_human_agreement_with_majority_voting.py
+python simplified_analysis.py
 ```
 
 **Key files:**
-- `full_dataset_majority/llm_human_agreement_with_majority_voting.py` - Main analysis with majority voting
-- `comparative_analysis/comprehensive_analysis.py` - Compares both correlation methods
-- `comparative_analysis/analyze_sets_separately.py` - Set 1 vs Set 2 comparison
+- `simplified_analysis.py` - Clean analysis with clear results and visualization
+- `simplified_majority_voting_results.png` - Main visualization showing recovery to original performance
+- `llm_human_agreement_with_majority_voting.py` - Complete implementation details
+
+**Additional analyses (for detailed comparisons):**
+- `comparative_analysis/` - Detailed method comparisons and validation analyses
