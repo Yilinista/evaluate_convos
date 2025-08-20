@@ -25,13 +25,14 @@ analysis/
 
 ## Results
 
-| Analysis | Data | Method | Spearman ρ (Dim Avg) | Spearman ρ (Overall) | Absolute Agreement |
-|----------|------|--------|---------------------|---------------------|-------------------|
-| Original | 28 conversations | Individual ratings | **0.325** | 0.160 | 42.0% |
-| Baseline | 55 conversations | Individual ratings | **0.174** | 0.108 | 42.4% |
-| **Final** | 55 conversations | **Majority voting** | **0.332** | **0.171** | **42.9%** |
+Comparing the original study results with our majority voting approach:
 
-**Key finding:** Majority voting improved correlation from 0.174 to 0.332 (+91%), recovering to the original study level.
+| Analysis | Data | Method | Spearman ρ | Absolute Agreement | Within-1 Agreement |
+|----------|------|--------|-----------|-------------------|-------------------|
+| **Original Study** | ~28 conversations | Individual ratings | **0.325** | 42% | 98.9% |
+| **Current (Majority Voting)** | 55 conversations | **Majority voting** | **0.332** | **42.9%** | **100.0%** |
+
+**Key finding:** Majority voting with the complete dataset maintains and slightly improves upon the original study performance.
 
 ## Majority Voting Details
 
