@@ -16,9 +16,12 @@ data/
 └── Empathy Evaluation - Set 2.csv    # Human ratings for 27 conversations
 
 analysis/
-├── original_set1_only/               # Initial analysis (Set 1 only, no majority voting)
 ├── full_dataset_majority/            # Main analysis (all 55 conversations + majority voting)
-└── comparative_analysis/             # Comparisons and additional visualizations
+└── comparative_analysis/             # Set comparisons with annotated visualizations
+
+archive/                              # Less important files (original analysis, old figures)
+├── original_set1_only/               # Initial Set 1 only analysis
+└── [other archived files]            # Previous versions and intermediate results
 ```
 
 ## Results
@@ -49,8 +52,14 @@ python simplified_analysis.py
 
 **Key files:**
 - `simplified_analysis.py` - Clean analysis with clear results and visualization
-- `simplified_majority_voting_results.png` - Main visualization showing recovery to original performance
+- `annotated_majority_voting_analysis.png` - **Main comprehensive figure with descriptions**
 - `llm_human_agreement_with_majority_voting.py` - Complete implementation details
 
-**Additional analyses (for detailed comparisons):**
-- `comparative_analysis/` - Detailed method comparisons and validation analyses
+**Annotated visualizations (recommended):**
+- `annotated_majority_voting_analysis.png` - 9-panel comprehensive analysis with subplot descriptions
+- `comparative_analysis/annotated_set_comparison_analysis.png` - Set 1 vs Set 2 comparison with explanations
+- `comparative_analysis/annotated_majority_voting_improvements.png` - Impact analysis with detailed annotations
+
+**Additional files:**
+- `simplified_majority_voting_results.png` - Simple before/after comparison
+- `archive/` - Previous versions and less important intermediate files
