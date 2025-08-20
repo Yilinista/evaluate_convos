@@ -192,9 +192,9 @@ def plot_enhanced_agreement_analysis(results_majority, results_individual=None):
     """Create enhanced visualizations comparing majority voting vs individual ratings"""
     
     if results_individual:
-        fig, axes = plt.subplots(3, 3, figsize=(18, 14))
+        fig, axes = plt.subplots(3, 3, figsize=(18, 16))  # Increased height for descriptions
     else:
-        fig, axes = plt.subplots(2, 3, figsize=(15, 10))
+        fig, axes = plt.subplots(2, 3, figsize=(15, 12))  # Increased height for descriptions
     
     dimensions = list(results_majority.keys())
     
@@ -225,6 +225,10 @@ def plot_enhanced_agreement_analysis(results_majority, results_individual=None):
     ax.grid(True, alpha=0.3)
     ax.set_ylim([0, 1.1])
     
+    # Add description
+    ax.text(0.5, -0.20, 'Exact match (blue) and ±1 tolerance (red) rates\nafter resolving human disagreements via majority voting',
+           transform=ax.transAxes, ha='center', va='top', fontsize=8, style='italic')
+    
     # Plot 2: Correlations with Kappa
     ax = axes[0, 1]
     
@@ -254,6 +258,10 @@ def plot_enhanced_agreement_analysis(results_majority, results_individual=None):
     ax.grid(True, alpha=0.3)
     ax.set_ylim([-0.1, 1])
     
+    # Add description
+    ax.text(0.5, -0.20, 'Three statistical measures: Spearman/Pearson correlations\nand Cohen\'s κ for classification agreement',
+           transform=ax.transAxes, ha='center', va='top', fontsize=8, style='italic')
+    
     # Plot 3: Human Inter-rater Agreement
     ax = axes[0, 2]
     human_agreements = [results_majority[d]['avg_human_agreement'] for d in dimensions]
@@ -269,6 +277,10 @@ def plot_enhanced_agreement_analysis(results_majority, results_individual=None):
     ax.set_xticklabels([d.replace('_', ' ').title() for d in dimensions], rotation=45, ha='right')
     ax.grid(True, alpha=0.3)
     ax.set_ylim([0, 1])
+    
+    # Add description
+    ax.text(0.5, -0.35, 'Human evaluators agreed ~73-75% of the time,\nshowing need for majority voting to resolve disagreements',
+           transform=ax.transAxes, ha='center', va='top', fontsize=8, style='italic')
     
     # Plots 4-6: Scatter plots for first 3 dimensions
     for idx, dim in enumerate(dimensions[:3]):
@@ -306,6 +318,10 @@ def plot_enhanced_agreement_analysis(results_majority, results_individual=None):
         
         # Add colorbar
         plt.colorbar(im, ax=ax, fraction=0.046, pad=0.04)
+        
+        # Add description for confusion matrix
+        ax.text(0.5, -0.25, 'Score distribution: darker = more frequent\nDiagonal = perfect LLM-human agreement',
+               transform=ax.transAxes, ha='center', va='top', fontsize=8, style='italic')
     
     # If we have individual results, add comparison row
     if results_individual:
@@ -351,6 +367,10 @@ def plot_enhanced_agreement_analysis(results_majority, results_individual=None):
         ax.grid(True, alpha=0.3)
         ax.set_ylim([0, 1.2])
         
+        # Add description
+        ax.text(0.5, -0.20, 'Before vs after majority voting\nGreen % = improvement achieved',
+               transform=ax.transAxes, ha='center', va='top', fontsize=8, style='italic')
+        
         # Plot 8: Summary statistics table
         ax = axes[2, 1]
         ax.axis('tight')
@@ -393,6 +413,10 @@ def plot_enhanced_agreement_analysis(results_majority, results_individual=None):
         
         ax.set_title('Overall Comparison', fontweight='bold', pad=20)
         
+        # Add description
+        ax.text(0.5, -0.15, 'Numerical summary of all improvements\nGreen = positive changes from majority voting',
+               transform=ax.transAxes, ha='center', va='top', fontsize=8, style='italic')
+        
         # Plot 9: Distribution of human agreement rates
         ax = axes[2, 2]
         
@@ -413,9 +437,14 @@ def plot_enhanced_agreement_analysis(results_majority, results_individual=None):
         ax.set_xticklabels([d.replace('_', '\n').title() for d in dimensions], rotation=0)
         ax.grid(True, alpha=0.3)
         ax.set_ylim([0, 1])
+        
+        # Add description
+        ax.text(0.5, -0.20, 'Human evaluator consistency by dimension\n~25% disagreement requires majority resolution',
+               transform=ax.transAxes, ha='center', va='top', fontsize=8, style='italic')
     
-    plt.suptitle('LLM-Human Agreement Analysis with Majority Voting', fontsize=16, fontweight='bold')
-    plt.tight_layout()
+    plt.suptitle('LLM-Human Agreement Analysis with Majority Voting\nComprehensive Results for 55 Conversations', 
+                fontsize=14, fontweight='bold', y=0.97)
+    plt.tight_layout(rect=[0, 0, 1, 0.95])  # Leave space for title and descriptions
     
     return fig
 

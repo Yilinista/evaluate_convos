@@ -160,10 +160,10 @@ def create_simple_comparison_plot(results_individual, results_majority):
     ax.grid(True, alpha=0.3)
     ax.set_ylim(0, 1.1)
     
-    plt.tight_layout()
     plt.suptitle('LLM-Human Agreement Analysis: Majority Voting Results\n' + 
                  '55 Conversations Total (Set 1: 28, Set 2: 27)', 
-                 fontsize=14, fontweight='bold', y=1.02)
+                 fontsize=12, fontweight='bold', y=0.95)
+    plt.tight_layout(rect=[0, 0, 1, 0.92])
     
     return fig
 
