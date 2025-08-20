@@ -1,0 +1,4 @@
+Analysis,Spearman_Correlation,Data_Size,Method
+Original Study,0.325,~28 conversations,Individual ratings
+Current (Individual),0.17426931952057156,55 conversations,Individual ratings
+Current (Majority Voting),0.3318223014939431,55 conversations,Majority voting
